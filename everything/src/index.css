@@ -1,0 +1,48 @@
+/* Global Styles */
+body {
+  font-family: 'Roboto', sans-serif; /* Or use a font you prefer */
+  background-color: #f9fafb; /* Light gray background */
+  color: #333;
+}
+
+/* Aesthetic updates */
+input, select, button {
+  border-radius: 8px; /* Rounded corners for inputs and buttons */
+}
+
+h1, h2, h3 {
+  font-family: 'Inter', sans-serif; /* Clean font for headers */
+}
+
+button {
+  background-color: #56A0D3; /* Carolina Blue */
+  border: 1px solid #4A90D1; /* Slightly darker blue for borders */
+}
+
+button:hover {
+  background-color: #4A90D1;
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #A4D8E6; /* Light blue outline for focus */
+}
+
+input, select {
+  border: 1px solid #56A0D3;
+  background-color: #f0f9ff;
+}
+
+input:focus, select:focus {
+  border-color: #4A90D1;
+  outline: none;
+}
+
+a {
+  color: #56A0D3; /* Carolina Blue */
+  text-decoration: underline;
+}
+
+a:hover {
+  color: #4A90D1;
+}
