@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 
 export default function HealthScreeningApp() {
   const [formData, setFormData] = useState({
@@ -12,7 +11,6 @@ export default function HealthScreeningApp() {
     insurancePlan: "",
   });
   const [results, setResults] = useState(null);
-  const [clinics, setClinics] = useState([]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -27,38 +25,14 @@ export default function HealthScreeningApp() {
       setFormData({ ...formData, [name]: value });
     }
   };
-  const handleSubmit = async (e) => {
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    
     // Placeholder for screening recommendation logic based on user input
     setResults({
       screenings: ["Blood Pressure Check", "Cholesterol Test"],
       locations: ["General Hospital, 5 miles away", "Health Clinic, 8 miles away"],
     });
-
-    try {
-      const apiKey = "1c46fa169a1241b9bcb36dcf4544a855";
-      const zipCode = formData.zipCode;
-      const url = `https://api.opencagedata.com/geocode/v1/json?q=${zipCode}&key=${apiKey}`;
-
-      const response = await axios.get(url);
-      const locationData = response.data.results;
-
-      if (locationData.length > 0) {
-        const clinicsNearZipCode = locationData.map((location) => ({
-          name: location.formatted_address,
-          latitude: location.geometry.lat,
-          longitude: location.geometry.lng
-        }));
-
-        setClinics(clinicsNearZipCode);
-      } else {
-        setClinics([]);
-      }
-    } catch (error) {
-      console.error("Error fetching clinics:", error);
-      setClinics([]);
-    }
   };
 
   return (
