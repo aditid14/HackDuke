@@ -12,6 +12,7 @@ export default function App() {
     symptoms: "", // New field for symptoms
   });
   const [results, setResults] = useState(null);
+  const [bgColor, setBgColor] = useState("rgb(75, 156, 211)");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -71,7 +72,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-blue-50 flex flex-col items-center justify-center">
+    <div
+      style={{ backgroundColor: "rgb(187, 222, 250)" }}
+      className="min-h-screen flex flex-col items-center justify-center"
+    >
       {/* Navbar */}
       <nav className="w-full bg-blue-700 text-white py-4 text-center text-xl font-bold shadow-md">
         Health Screening Recommender
