@@ -43,19 +43,71 @@ export default function App() {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setResults({
-      screenings: ["Blood Pressure Check", "Cholesterol Test"],
-      locations: ["General Hospital, 5 miles away", "Health Clinic, 8 miles away"],
-    });
+  const calendarHeader = "BEGIN:VCALENDAR\nVERSION:2.0\n";
+const calendarFooter = "END:VCALENDAR";
+let events = [];
 
-    const icsContent = calendarHeader + events.join("") + calendarFooter;
-    const blob = new Blob([icsContent], { type: 'text/calendar' });
-    const url = URL.createObjectURL(blob);
-    return url;
-  };
+const generateCalendar = (screenings) => {
+  events = screenings.map((screening, index) => {
+    return `BEGIN:VEVENT\nSUMMARY:${screening}\nDTSTART:20250210T090000Z\nDTEND:20250210T100000Z\nEND:VEVENT\n`;
+  });
 
+  const icsContent = calendarHeader + events.join("") + calendarFooter;
+  const blob = new Blob([icsContent], { type: 'text/calendar' });
+  return URL.createObjectURL(blob);
+};
+
+
+ const handleSubmit = (e) => {
+  e.preventDefault();
+
+  let screeningRecommendations = [];
+
+  const userAge = parseInt(formData.age, 10);
+  const selectedHealthHistory = formData.healthHistory || [];
+  const selectedLifestyle = formData.lifestyle || [];
+
+  // Define high-risk conditions for breast cancer screening
+  const highRiskConditions = [
+    "brcaMutation",
+    "firstDegreeRelativeBrca",
+    "radiationTherapy",
+    "geneticSyndrome"
+  ];
+
+  const meetsHighRiskCriteria = selectedHealthHistory.some(condition => 
+    highRiskConditions.includes(condition)
+  );
+
+  // Breast Cancer Screening
+  if ((userAge >= 40 && userAge <= 75) || (userAge >= 30 && meetsHighRiskCriteria)) {
+    screeningRecommendations.push("Breast Cancer Screening");
+  }
+
+  // Colorectal Cancer Screening
+  if (userAge >= 45) {
+    screeningRecommendations.push("Colorectal Cancer Screening");
+  }
+
+  // Cervical Cancer Screening
+  if (userAge >= 25) {
+    screeningRecommendations.push("Cervical Cancer Screening");
+  }
+
+  // Lung Cancer Screening
+  if (
+    userAge >= 50 && userAge <= 80 &&
+    selectedLifestyle.includes("smoking")
+  ) {
+    screeningRecommendations.push("Lung Cancer Screening");
+  }
+
+  // Set results with screenings
+  setResults({
+    screenings: screeningRecommendations.length > 0 ? screeningRecommendations : ["No specific screenings recommended"],
+    locations: ["General Hospital, 5 miles away", "Health Clinic, 8 miles away"]
+  });
+};
   // Handle the scheduling request (download .ics file)
   const handleScheduleRequest = () => {
     if (results && results.screenings) {
@@ -67,14 +119,14 @@ export default function App() {
   // FRONT PAGE (step = 0)
   if (step === 0) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-blue-50">
+      <div className="h-screen flex flex-col items-center justify-center bg-blue-50">
         <button
           onClick={() => setStep(1)}
-          className="bg-blue-500 hover:bg-blue-700 text-white p-3 rounded"
+          className="bg-blue-500 hover:bg-blue-700 text-white px-6 py-3 rounded text-lg"
         >
           Get Personalized Screening Plan
-          </button>
-        </div>
+        </button>
+      </div>
     );
   }
 
@@ -132,9 +184,9 @@ export default function App() {
         )}
 
 {step === 2 && (
-  <div className="flex flex-col space-y-3">
-    <div>
-      <h3>Current Health Conditions</h3>
+  <div className="flex flex-col space-y-3 items-center">
+    <div className="text-center">
+      <h3 className="font-semibold">Current Health Conditions</h3>
       <input
         type="checkbox"
         name="conditions"
@@ -156,7 +208,9 @@ export default function App() {
         onChange={handleChange}
       /> Heart Disease
     </div>
-    <div className="flex justify-between">
+
+    {/* Centered Buttons */}
+    <div className="flex justify-center gap-4">
       <button
         type="button"
         onClick={prevStep}
@@ -270,13 +324,15 @@ export default function App() {
                 name="lifestyle"
                 value="smoking"
                 onChange={handleChange}
-              /> Smoking
+              /> Smoking: 20 pack-year smoking history and currently smoke or have quit within the past 15 years
+              <br />
               <input
                 type="checkbox"
                 name="lifestyle"
                 value="exercise"
                 onChange={handleChange}
               /> Regular Exercise
+              <br />
             </div>
             <div className="flex justify-between">
               <button
