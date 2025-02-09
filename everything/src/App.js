@@ -57,7 +57,6 @@ const generateCalendar = (screenings) => {
   return URL.createObjectURL(blob);
 };
 
-
  const handleSubmit = (e) => {
   e.preventDefault();
 
