@@ -43,6 +43,21 @@ export default function App() {
     }
   };
 
+  const calendarHeader = "BEGIN:VCALENDAR\nVERSION:2.0\n";
+const calendarFooter = "END:VCALENDAR";
+let events = [];
+
+const generateCalendar = (screenings) => {
+  events = screenings.map((screening, index) => {
+    return `BEGIN:VEVENT\nSUMMARY:${screening}\nDTSTART:20250210T090000Z\nDTEND:20250210T100000Z\nEND:VEVENT\n`;
+  });
+
+  const icsContent = calendarHeader + events.join("") + calendarFooter;
+  const blob = new Blob([icsContent], { type: 'text/calendar' });
+  return URL.createObjectURL(blob);
+};
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setResults({
