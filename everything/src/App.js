@@ -68,21 +68,20 @@ export default function App() {
   if (step === 0) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-blue-50">
-        <h1 className="w-full text-center text-2xl font-bold mb-6 text-blue-800">Health Screening Recommender</h1>
         <button
           onClick={() => setStep(1)}
-          className="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded"
+          className="bg-blue-500 hover:bg-blue-700 text-white p-3 rounded"
         >
           Get Personalized Screening Plan
-        </button>
-      </div>
+          </button>
+        </div>
     );
   }
 
   // FORM PAGES (step >= 1)
   return (
     <div className="max-w-lg mx-auto p-4 bg-blue-50 min-h-screen flex flex-col items-center">
-      <h1 className="w-full text-center text-2xl font-bold mb-4 text-blue-800">Health Screening Recommender</h1>
+      <h1 className="w-full text-center text-2xl font-bold mb-4 text-blue-800">OncoCheck</h1>
       
       <div className="w-full bg-gray-300 h-4 rounded-full overflow-hidden mb-6">
         <div
